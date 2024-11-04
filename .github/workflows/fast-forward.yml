@@ -15,7 +15,6 @@ jobs:
 
     steps:
       - name: Check if PR targets master
-        id: check_pr_target
         uses: actions/github-script@v6
         with:
           script: |
@@ -33,15 +32,3 @@ jobs:
         with:
           merge: true
           comment: 'on-error'
-
-      - name: Post comment if FF is possible
-        if: steps.ff-step.outputs.result == 'true'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: "✅ you can merge to `master` branch by commenting "/fast-forward".",
-            });
