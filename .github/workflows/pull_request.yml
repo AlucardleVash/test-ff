@@ -14,17 +14,12 @@ jobs:
 
     steps:
       - name: Checking if fast forwarding is possible
-        id: ff-step
         uses: sequoia-pgp/fast-forward@v1
         with:
           merge: false
           comment: 'on-error'
 
-      - name: Log fast-forward check result
-        run: echo ${{ steps.ff-step.outputs.result }}
-
       - name: Post comment if FF is possible
-        if: steps.ff-step.outputs.result == 'true'
         uses: actions/github-script@v6
         with:
           script: |
