@@ -27,8 +27,21 @@ jobs:
             return pr.base.ref === 'master';
 
       - name: Fast forwarding
+        id: ff-step
         if: ${{ steps.check_pr_target.outputs.result == 'true' && steps.check_ci_status.outputs.result == 'true' }}
         uses: sequoia-pgp/fast-forward@v1
         with:
           merge: true
           comment: 'on-error'
+
+      - name: Post comment if FF is possible
+        if: steps.ff-step.outputs.result == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: "✅ you can merge to `master` branch by commenting "/fast-forward".",
+            });
