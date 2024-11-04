@@ -20,6 +20,9 @@ jobs:
           merge: false
           comment: 'on-error'
 
+      - name: Log fast-forward check result
+        run: echo "Fast-forward result: ${{ steps.ff-step.outputs.result }}"
+
       - name: Post comment if FF is possible
         if: steps.ff-step.outputs.result == 'true'
         uses: actions/github-script@v6
