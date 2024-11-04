@@ -20,7 +20,7 @@ jobs:
           comment: 'on-error'
 
       - name: Post comment if FF is possible
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             await github.rest.issues.createComment({
