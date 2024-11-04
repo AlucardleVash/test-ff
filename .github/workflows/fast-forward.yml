@@ -4,7 +4,6 @@ on:
     types: [created, edited]
 jobs:
   fast-forward:
-    # Only run if the comment contains the /fast-forward command.
     if: ${{ contains(github.event.comment.body, '/fast-forward')
       && github.event.issue.pull_request }}
     runs-on: ubuntu-latest
@@ -15,12 +14,21 @@ jobs:
       issues: write
 
     steps:
+      - name: Check if PR targets master
+        id: check_pr_target
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            return pr.base.ref === 'master';
+
       - name: Fast forwarding
+        if: steps.check_pr_target.outputs.result == 'true'
         uses: sequoia-pgp/fast-forward@v1
         with:
           merge: true
-          # To reduce the workflow's verbosity, use 'on-error'
-          # to only post a comment when an error occurs, or 'never' to
-          # never post a comment.  (In all cases the information is
-          # still available in the step's summary.)
-          comment: always
+          comment: 'on-error'
