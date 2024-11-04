@@ -27,5 +27,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: "✅ you can merge to `master` branch by commenting "/fast-forward".",
+              body: "✅ You can merge to `master` branch by commenting `/fast-forward`."
             });
