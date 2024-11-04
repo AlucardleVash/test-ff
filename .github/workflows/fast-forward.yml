@@ -27,7 +27,7 @@ jobs:
             return pr.base.ref === 'master';
 
       - name: Fast forwarding
-        if: steps.check_pr_target.outputs.result == 'true'
+        if: ${{ steps.check_pr_target.outputs.result == 'true' && steps.check_ci_status.outputs.result == 'true' }}
         uses: sequoia-pgp/fast-forward@v1
         with:
           merge: true
