@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checking if fast forwarding is possible
-        id: check_pr_target
+        id: ff-step
         uses: sequoia-pgp/fast-forward@v1
         with:
           merge: false
